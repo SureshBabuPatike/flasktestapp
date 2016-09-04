@@ -29,6 +29,8 @@ class ClientUser(SurrogatePK, Model):
 class Project(SurrogatePK, Model):
     """A project for a client"""
     __tablename__ = 'projects'
+    __table_args__ = (db.UniqueConstraint('client_id', 'name'),
+                      {})
     name = Column(db.String(255), unique=True, nullable=False)
     client_id = reference_col('clients', nullable=False)
     client = relationship('Client', backref='projects')
