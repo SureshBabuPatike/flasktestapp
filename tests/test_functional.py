@@ -7,7 +7,7 @@ from flask import url_for
 
 from flasktestapp.user.models import User
 
-from .factories import UserFactory
+from flasktestapp.factories import UserFactory
 
 
 class TestLoggingIn:

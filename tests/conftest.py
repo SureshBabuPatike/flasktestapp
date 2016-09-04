@@ -8,7 +8,7 @@ from flasktestapp.app import create_app
 from flasktestapp.database import db as _db
 from flasktestapp.settings import TestConfig
 
-from .factories import UserFactory
+from flasktestapp.factories import UserFactory
 
 
 @pytest.yield_fixture(scope='function')
