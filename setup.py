@@ -81,6 +81,13 @@ setup(
     cmdclass={'test': PyTest},
     entry_points={
         "console_scripts": ["flasktestapp-manage = flasktestapp.manage:main"],
-        "paste.app_factory": ["main = flasktestapp.app:app_factory"]
+        "paste.app_factory": ["main = flasktestapp.app:app_factory"],
+        "flask.commands": [
+            "clean = flasktestapp.commands:clean",
+            "factories = flasktestapp.commands:factories",
+            "lint = flasktestapp.commands:lint",
+            "test = flasktestapp.commands:test",
+            "urls = flasktestapp.commands:urls",
+        ]
     },
 )

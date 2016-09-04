@@ -124,3 +124,14 @@ def urls(url, order):
 
     for row in rows:
         click.echo(str_template.format(*row[:column_length]))
+
+
+@click.command()
+@with_appcontext
+def factories():
+    """Create factories with factory_boy"""
+    import pprint
+    from flasktestapp.factories import load_factories
+    data = load_factories()
+    print(pprint.pformat(data.items()))
+    click.echo("Factories completed")
