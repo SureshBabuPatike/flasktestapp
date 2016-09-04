@@ -13,6 +13,9 @@ class Client(SurrogatePK, Model):
     users = relationship('User',
                          secondary='client_users')
 
+    def __repr__(self):
+        return '<Client({}, {})>'.format(repr(self.name), self.id)
+
 
 class ClientUser(SurrogatePK, Model):
     __tablename__ = 'client_users'
@@ -48,7 +51,7 @@ class Project(SurrogatePK, Model):
     #                       client_id=kwargs['client_id'])
 
     def __repr__(self):
-        return '<Project({}, {})>'.format(self.name, self.client_id)
+        return '<Project({}, {})>'.format(repr(self.name), self.client_id)
 
 
 class ProductArea(SurrogatePK, Model):
@@ -61,6 +64,9 @@ class ProductArea(SurrogatePK, Model):
     def __init__(self, **kwargs):
         """Create instance"""
         db.Model.__init__(self, name=kwargs['name'])
+
+    def __repr__(self):
+        return '<ProductArea({})>'.format(repr(self.name))
 
 
 class Feature(SurrogatePK, Model):
@@ -94,4 +100,4 @@ class Feature(SurrogatePK, Model):
         return self.name
 
     def __repr__(self):
-        return '<Feature({}, {})>'.format(self.name, self.project_id)
+        return '<Feature({}, {})>'.format(repr(self.name), self.project_id)
