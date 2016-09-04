@@ -16,6 +16,7 @@ class BaseFactory(SQLAlchemyModelFactory):
 
         abstract = True
         sqlalchemy_session = db.session
+        force_flush = True
 
 
 class UserFactory(BaseFactory):
@@ -25,6 +26,7 @@ class UserFactory(BaseFactory):
     email = Sequence(lambda n: 'user{0}@example.com'.format(n))
     password = PostGenerationMethodCall('set_password', 'example')
     active = True
+    is_admin = False
 
     class Meta:
         """Factory configuration."""
@@ -38,8 +40,10 @@ from flasktestapp.feature import models
 class ClientFactory(BaseFactory):
 
     name = Sequence(lambda n: 'client{0}'.format(n))
+
     class Meta:
         model = models.Client
+
 
 class ClientUserFactory(BaseFactory):
     class Meta:
@@ -47,14 +51,18 @@ class ClientUserFactory(BaseFactory):
 
 
 class ProjectFactory(BaseFactory):
+
+    name = Sequence(lambda n: 'project {0}'.format(n))
+
     class Meta:
         model = models.Project
 
 
 class ProductAreaFactory(BaseFactory):
+    name = Sequence(lambda n: 'productArea{}'.format(n))
+
     class Meta:
         model = models.ProductArea
-    name = Sequence(lambda n: 'productArea{}'.format(n))
 
     @classmethod
     def create_defaults(cls):
@@ -65,24 +73,29 @@ class ProductAreaFactory(BaseFactory):
 
 
 class FeatureFactory(BaseFactory):
+
     class Meta:
         model = models.Feature
 
+    name = Sequence(lambda n: 'feature {}'.format(n))
+
 
 def load_factories():
-    admin = UserFactory(
+    admin = UserFactory.create(
         username='admin',
-        password='password')
-    client = ClientFactory(name='clientA', users=[admin])
+        password='password',
+        is_admin=True)
+    client = ClientFactory.create(name='clientABC', users=[admin])
     client.users.append(admin)  # TODO
-    project = ProjectFactory(
+    project = ProjectFactory.create(
         name='projectA',
         client_id=client.id)
     product_areas = ProductAreaFactory.create_defaults()
-    feature = FeatureFactory(
+    feature = FeatureFactory.create(
         name='featureA',
         project_id=project.id,
-        product_area_id=product_areas[0].id)
+        product_area_id=product_areas[0].id,
+        user=admin)
     import collections
     data = collections.OrderedDict()
     data['users'] = [admin]
